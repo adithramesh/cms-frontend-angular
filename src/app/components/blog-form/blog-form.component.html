@@ -1,0 +1,84 @@
+<app-navbar></app-navbar>
+<app-sidebar></app-sidebar>
+
+<div class="blog-form-container">
+  <div class="form-card">
+    <h2>{{ mode === 'create' ? 'Create New Blog' : 'Edit Blog' }}</h2>
+
+    <form [formGroup]="blogForm" (ngSubmit)="onSubmit()">
+      <!-- Title Field -->
+      <div class="form-group">
+        <label for="title">Title *</label>
+        <input
+          type="text"
+          id="title"
+          formControlName="title"
+          placeholder="Enter blog title"
+          [class.invalid]="isFieldInvalid('title')"
+        />
+        <div class="error-message" *ngIf="isFieldInvalid('title')">
+          <small *ngIf="getFieldError('title', 'required')">Title is required</small>
+          <small *ngIf="getFieldError('title', 'minlength')">
+            Title must be at least 5 characters long
+          </small>
+          <small *ngIf="getFieldError('title', 'maxlength')">
+            Title cannot exceed 200 characters
+          </small>
+        </div>
+      </div>
+
+      <!-- Image Field -->
+      <div class="form-group">
+        <label for="image">Blog Image</label>
+        <input
+          type="file"
+          id="image"
+          (change)="onImageSelect($event)"
+          accept="image/*"
+        />
+        <small class="help-text">Accepted formats: JPEG, PNG, GIF, WebP (Max size: 5MB)</small>
+        
+        <div *ngIf="imagePreview" class="image-preview">
+          <img [src]="imagePreview" alt="Preview" />
+        </div>
+      </div>
+
+      <!-- Content Field -->
+      <div class="form-group">
+        <label for="content">Content *</label>
+        <textarea
+          id="content"
+          formControlName="content"
+          rows="10"
+          placeholder="Write your blog content here..."
+          [class.invalid]="isFieldInvalid('content')"
+        ></textarea>
+        <div class="error-message" *ngIf="isFieldInvalid('content')">
+          <small *ngIf="getFieldError('content', 'required')">Content is required</small>
+          <small *ngIf="getFieldError('content', 'minlength')">
+            Content must be at least 20 characters long
+          </small>
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button 
+          type="button" 
+          class="cancel-btn" 
+          (click)="cancel()" 
+          [disabled]="isSubmitting"
+        >
+          Cancel
+        </button>
+        <button 
+          type="submit" 
+          class="submit-btn" 
+          [disabled]="blogForm.invalid || isSubmitting"
+        >
+          {{ isSubmitting ? 'Saving...' : (mode === 'create' ? 'Create Blog' : 'Update Blog') }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
