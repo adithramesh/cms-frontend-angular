@@ -1,5 +1,5 @@
 <div class="blog-card" (click)="viewDetails()">
-  <div class="blog-image">
+  <div class="blog-image" *ngIf="blog.imageUrl && blog.imageUrl !== ''">
     <img [src]="getImageUrl()" [alt]="blog.title" />
   </div>
   <div class="blog-content">

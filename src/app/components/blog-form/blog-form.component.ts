@@ -7,7 +7,6 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
 import { BlogService } from '../../services/blog/blog.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { ToastrService } from 'ngx-toastr';
-import { environment } from '../../../environments/environment';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -48,57 +47,23 @@ export class BlogFormComponent implements OnInit, OnDestroy {
     }
   }
 
+
   loadBlogForEdit() {
     if (!this.blogId) return;
-    
     const sub = this._blogService.getBlogById(this.blogId).subscribe({
       next: (blog) => {
-   
         this.blogForm.patchValue({
           title: blog.title,
           content: blog.content
         });
-        
-        if (blog.imageUrl) {
-          this.imagePreview = `https://res.cloudinary.com/${environment.CLOUDINARY_CLOUD_NAME}/image/upload/${blog.imageUrl}`;
-        }
+        // Skip image preview logic since we aren't using images
       },
       error: () => this._toastr.error('Failed to load blog')
     });
     this._subscription.add(sub);
   }
 
-  onImageSelect(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      const file = input.files[0];
-      
-      
-      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
-      if (!allowedTypes.includes(file.type)) {
-        this._toastr.error('Please select a valid image file (JPEG, PNG, GIF, or WebP)');
-        input.value = ''; 
-        return;
-      }
-
-    
-      const maxSize = 5 * 1024 * 1024; 
-      if (file.size > maxSize) {
-        this._toastr.error('Image size should not exceed 5MB');
-        input.value = ''; 
-        return;
-      }
-
-   
-      this.blogForm.patchValue({ image: file });
-
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        this.imagePreview = e.target?.result as string;
-      };
-      reader.readAsDataURL(file);
-    }
-  }
+  
 
   onSubmit() {
    
@@ -115,19 +80,14 @@ export class BlogFormComponent implements OnInit, OnDestroy {
     }
 
     this.isSubmitting = true;
-    const formData = new FormData();
-    const formValue = this.blogForm.value;
-    
-    formData.append('title', formValue.title!);
-    formData.append('content', formValue.content!);
-    formData.append('authorId', user.id);
-    
-    if (formValue.image) {
-      formData.append('image', formValue.image);
-    }
+
+    const blogPayload = {
+      title: this.blogForm.value.title!,
+      content: this.blogForm.value.content!
+    };
 
     if (this.mode === 'create') {
-      const sub = this._blogService.createBlog(formData).subscribe({
+      const sub = this._blogService.createBlog(blogPayload).subscribe({
         next: () => {
           this._toastr.success('Blog created successfully!');
           this._router.navigate(['/blogs']);
@@ -143,7 +103,7 @@ export class BlogFormComponent implements OnInit, OnDestroy {
       });
       this._subscription.add(sub);
     } else if (this.blogId) {
-      const sub = this._blogService.updateBlog(this.blogId, formData).subscribe({
+      const sub = this._blogService.updateBlog(this.blogId, blogPayload).subscribe({
         next: () => {
           this._toastr.success('Blog updated successfully!');
           this._router.navigate(['/blogs', this.blogId]);

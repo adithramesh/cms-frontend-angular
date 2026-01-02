@@ -3,11 +3,11 @@ import { inject, Injectable,  } from '@angular/core';
 import {  Observable, } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthRequestDTO, AuthResponseDTO } from '../../models/auth.model';
-import { environment } from '../../../environments/environment.prod';
+import { environment } from '../../../environments/environment';
 import { jwtDecode } from 'jwt-decode';
 
 interface DecodedToken {
-  id: string;
+  sub: string;
   username?: string;
 }
 
@@ -20,20 +20,34 @@ export class AuthService {
 
   private apiUrl=`${environment.BACK_END_API_URL}/auth/`
   signup(signUpData: AuthRequestDTO): Observable<AuthResponseDTO> {
-    return this.http.post<AuthResponseDTO>(`${this.apiUrl}signup`, signUpData);
+    const payload = {
+      name: signUpData.username ?? 'User',
+      email: signUpData.phoneNumber, 
+      password: signUpData.password,
+    }
+    return this.http.post<AuthResponseDTO>(`${this.apiUrl}register`, payload);
   }
 
   login(loginData: AuthRequestDTO):Observable<AuthResponseDTO>{
-    return this.http.post<AuthResponseDTO>(`${this.apiUrl}login`, loginData)
+    const payload = {
+      email:loginData.phoneNumber,
+      password:loginData.password
+    }
+    return this.http.post<AuthResponseDTO>(`${this.apiUrl}login`, payload)
   }
   getCurrentUser(): { id: string; username: string } | null {
       const token = localStorage.getItem('access_token');
+      console.log("token", token);
+      
       if (!token) return null;
       
       try {
         const decoded: DecodedToken = jwtDecode(token);
+        console.log("decoded", decoded);
+        
+        
         return {
-          id: decoded.id,
+          id: decoded.sub,
           username: decoded.username && typeof decoded.username === 'string' 
                       ? decoded.username 
                       : 'User'
@@ -46,7 +60,6 @@ export class AuthService {
     isLoggedIn(): boolean {
       return !!localStorage.getItem('access_token');
     }
-      
 
     logoutUser(): void {
     console.log('Interceptor: Logging out user');

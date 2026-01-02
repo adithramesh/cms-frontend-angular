@@ -54,6 +54,8 @@ export class BlogDetailComponent implements OnInit {
 
   checkOwnership() {
     const user = this._authService.getCurrentUser();
+    console.log('Current Logged User ID:', user);
+      console.log('Blog Author ID:', this.blog?.author?.id);
     if (user && this.blog) {
       this.isOwner = user.id === this.blog.author.id;
     }

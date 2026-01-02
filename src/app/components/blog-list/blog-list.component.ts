@@ -43,7 +43,7 @@ export class BlogListComponent implements OnInit {
     if (this.filterType === 'my') {
       const user = this._authService.getCurrentUser();
       if (user) {
-        const sub = this._blogService.getBlogsByUserId(user.id).subscribe({
+        const sub = this._blogService.getBlogsByUserId().subscribe({
           next: (res) => {
             this.blogs = res.blogs;
             this.isLoading = false;

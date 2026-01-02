@@ -24,7 +24,7 @@
           name="phoneNumber" 
           #phoneNumber="ngModel"
           required 
-          pattern="[0-9]{10}"
+         
           [class.invalid]="phoneNumber.invalid && phoneNumber.touched"
         />
         <div class="error-message" *ngIf="phoneNumber.invalid && phoneNumber.touched">

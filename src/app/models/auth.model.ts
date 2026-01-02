@@ -9,7 +9,7 @@ export interface AuthRequestDTO {
 
 
 export interface AuthResponseDTO {
-    success: boolean;
+    success?: boolean;
     data?: {
         id: string; 
         username:string;
