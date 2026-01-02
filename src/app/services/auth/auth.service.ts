@@ -3,7 +3,7 @@ import { inject, Injectable,  } from '@angular/core';
 import {  Observable, } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthRequestDTO, AuthResponseDTO } from '../../models/auth.model';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../environments/environment.prod';
 import { jwtDecode } from 'jwt-decode';
 
 interface DecodedToken {
