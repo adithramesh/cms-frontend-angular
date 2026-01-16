@@ -1,4 +1,11 @@
-<aside class="sidebar">
+<!-- Overlay -->
+<div class="sidebar-overlay" 
+     [class.active]="isOpen" 
+     (click)="closeSidebar()">
+</div>
+
+<!-- Sidebar -->
+<aside class="sidebar" [class.active]="isOpen">
   <button class="sidebar-btn create-btn" (click)="navigateToCreate()">
     ✍️ Create Blog
   </button>

@@ -47,6 +47,18 @@ export class BlogFormComponent implements OnInit, OnDestroy {
     }
   }
 
+  
+  isSidebarOpen = false;
+
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
+
+  closeSidebar() {
+    this.isSidebarOpen = false;
+  }
+
+
 
   loadBlogForEdit() {
     if (!this.blogId) return;

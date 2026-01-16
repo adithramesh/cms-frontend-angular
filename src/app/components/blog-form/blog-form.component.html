@@ -1,5 +1,5 @@
-<app-navbar></app-navbar>
-<app-sidebar></app-sidebar>
+<app-navbar (sidebarToggle)="toggleSidebar()"></app-navbar>
+<app-sidebar [isOpen]="isSidebarOpen" (closed)="closeSidebar()"></app-sidebar>
 
 <div class="blog-form-container">
   <div class="form-card">

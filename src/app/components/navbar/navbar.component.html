@@ -1,5 +1,11 @@
 <nav class="navbar">
   <div class="navbar-left">
+    <!-- Hamburger button for mobile -->
+    <button class="hamburger-btn" (click)="toggleSidebar()" *ngIf="showHamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
     <span class="welcome-text">Welcome, {{ username }}</span>
   </div>
   <div class="navbar-right">

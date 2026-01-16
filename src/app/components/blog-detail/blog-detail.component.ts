@@ -36,6 +36,18 @@ export class BlogDetailComponent implements OnInit {
     }
   }
 
+  
+  isSidebarOpen = false;
+
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
+
+  closeSidebar() {
+    this.isSidebarOpen = false;
+  }
+
+
   loadBlog(id: string) {
     const sub = this._blogService.getBlogById(id).subscribe({
       next: (blog) => {

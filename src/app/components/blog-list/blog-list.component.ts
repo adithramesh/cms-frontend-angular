@@ -37,6 +37,16 @@ export class BlogListComponent implements OnInit {
     this._subscription.add(sub)
   }
 
+  isSidebarOpen = false;
+
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
+
+  closeSidebar() {
+    this.isSidebarOpen = false;
+  }
+
   loadBlogs() {
     this.isLoading = true;
     

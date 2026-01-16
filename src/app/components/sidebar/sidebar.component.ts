@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -11,6 +11,23 @@ import { CommonModule } from '@angular/common';
 })
 export class SidebarComponent {
   private _router = inject(Router);
+
+  @Input() isOpen = false;
+  @Output() closed = new EventEmitter<void>();
+
+  isSidebarOpen = false;
+
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
+
+ 
+
+  closeSidebar() {
+    if (window.innerWidth <= 768) {
+      this.closed.emit();
+    }
+  }
 
   navigateToCreate() {
     this._router.navigate(['/blogs/create']);
