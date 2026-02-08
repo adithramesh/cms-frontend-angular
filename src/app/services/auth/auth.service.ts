@@ -15,17 +15,17 @@ interface DecodedToken {
   providedIn: 'root'
 })
 export class AuthService {
-   private http = inject(HttpClient)
-   private router = inject(Router);
+   private _http = inject(HttpClient)
+   private _router = inject(Router);
 
-  private apiUrl=`${environment.BACK_END_API_URL}/auth/`
+  private _apiUrl=`${environment.BACK_END_API_URL}/auth/`
   signup(signUpData: AuthRequestDTO): Observable<AuthResponseDTO> {
     const payload = {
       name: signUpData.username ?? 'User',
       email: signUpData.phoneNumber, 
       password: signUpData.password,
     }
-    return this.http.post<AuthResponseDTO>(`${this.apiUrl}register`, payload);
+    return this._http.post<AuthResponseDTO>(`${this._apiUrl}register`, payload);
   }
 
   login(loginData: AuthRequestDTO):Observable<AuthResponseDTO>{
@@ -33,7 +33,7 @@ export class AuthService {
       email:loginData.phoneNumber,
       password:loginData.password
     }
-    return this.http.post<AuthResponseDTO>(`${this.apiUrl}login`, payload)
+    return this._http.post<AuthResponseDTO>(`${this._apiUrl}login`, payload)
   }
   getCurrentUser(): { id: string; username: string } | null {
       const token = localStorage.getItem('access_token');
@@ -65,6 +65,6 @@ export class AuthService {
     console.log('Interceptor: Logging out user');
     localStorage.removeItem('access_token');
     localStorage.removeItem('auth');
-    this.router.navigate(['/login']);
+    this._router.navigate(['/login']);
   }
 }

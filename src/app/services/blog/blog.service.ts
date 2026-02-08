@@ -8,30 +8,30 @@ import { environment } from '../../../environments/environment.prod';
   providedIn: 'root'
 })
 export class BlogService {
-  private http = inject(HttpClient);
-  private apiUrl = `${environment.BACK_END_API_URL}/articles`;
+  private _http = inject(HttpClient);
+  private _apiUrl = `${environment.BACK_END_API_URL}/articles`;
 
   getAllBlogs(): Observable<BlogListResponseDTO> {
-    return this.http.get<BlogListResponseDTO>(`${this.apiUrl}`);
+    return this._http.get<BlogListResponseDTO>(`${this._apiUrl}`);
   }
 
   getBlogById(id: string): Observable<BlogResponseDTO> {
-    return this.http.get<BlogResponseDTO>(`${this.apiUrl}/${id}`);
+    return this._http.get<BlogResponseDTO>(`${this._apiUrl}/${id}`);
   }
 
   getBlogsByUserId(): Observable<BlogListResponseDTO> {
-    return this.http.get<BlogListResponseDTO>(`${this.apiUrl}/me`);
+    return this._http.get<BlogListResponseDTO>(`${this._apiUrl}/me`);
   }
 
   createBlog(blogData: { title?: string; content?: string }): Observable<BlogResponseDTO> {
-    return this.http.post<BlogResponseDTO>(`${this.apiUrl}`, blogData );
+    return this._http.post<BlogResponseDTO>(`${this._apiUrl}`, blogData );
   }
 
   updateBlog(id: string, blogData: { title?: string; content?: string }): Observable<BlogResponseDTO> {
-    return this.http.patch<BlogResponseDTO>(`${this.apiUrl}/${id}`, blogData);
+    return this._http.patch<BlogResponseDTO>(`${this._apiUrl}/${id}`, blogData);
   }
 
   deleteBlog(id: string):Observable<{success:boolean, message:string}>{
-    return this.http.delete<{success:boolean, message:string}>(`${this.apiUrl}/${id}`)
+    return this._http.delete<{success:boolean, message:string}>(`${this._apiUrl}/${id}`)
   }
 }
